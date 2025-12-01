@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced SIP Calculator with Ads</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        #bannerAd {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #rewardedBtn {
+            background-color: #ffc107;
+            color: black;
+        }
+        #rewardedBtn:hover {
+            background-color: #e0a800;
+        }
+        #nativeAd {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        #results {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        #summary {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Enhanced SIP Calculator</h1>
+    
+    <!-- Banner Ad -->
+    <div id="bannerAd"></div>
+    
+    <form id="sipForm">
+        <label for="monthlyInvestment">Monthly Investment Amount (₹):</label>
+        <input type="number" id="monthlyInvestment" min="1" required>
+
+        <label for="annualRate">Annual Interest Rate (%):</label>
+        <input type="number" id="annualRate" min="0" step="0.01" required>
+
+        <label for="years">Investment Period (Years):</label>
+        <input type="number" id="years" min="1" required>
+
+        <button type="submit">Calculate</button>
+        <button type="button" id="rewardedBtn">Watch Ad for Bonus Tip</button>
+    </form>
+    
+    <!-- Native Advanced Ad -->
+    <div id="nativeAd"></div>
+    
+    <div id="results" style="display: none;">
+        <div id="summary"></div>
+        <table id="breakdownTable">
+            <thead>
+                <tr>
+                    <th>Year</th>
+                    <th>Invested Amount (₹)</th>
+                    <th>Interest Earned (₹)</th>
+                    <th>Total Value (₹)</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+
+    <!-- AdMob SDK Script -->
+    <script type="text/javascript">
+        // Initialize AdMob (replace with your app ID)
+        var admobid = {};
+        if (/(android)/i.test(navigator.userAgent)) {
+            admobid = {
+                banner: 'ca-app-pub-7534810976008564/8381327558',
+                interstitial: 'ca-app-pub-7534810976008564/2805675049',
+                native: 'ca-app-pub-7534810976008564/4442082543',
+                rewarded: 'ca-app-pub-7534810976008564/3192580054'
+            };
+        } else if (/(ipod|iphone|ipad)/i.test(navigator.userAgent)) {
+            admobid = {
+                banner: 'ca-app-pub-7534810976008564/8381327558',
+                interstitial: 'ca-app-pub-7534810976008564/2805675049',
+                native: 'ca-app-pub-7534810976008564/4442082543',
+                rewarded: 'ca-app-pub-7534810976008564/3192580054'
+            };
+        } else {
+            admobid = {
+                banner: 'ca-app-pub-7534810976008564/8381327558',
+                interstitial: 'ca-app-pub-7534810976008564/2805675049',
+                native: 'ca-app-pub-7534810976008564/4442082543',
+                rewarded: 'ca-app-pub-7534810976008564/3192580054'
+            };
+        }
+
+        // Load AdMob SDK
+        if (typeof AdMob !== 'undefined') {
+            AdMob.createBanner({
+                adId: admobid.banner,
+                position: AdMob.AD_POSITION.TOP_CENTER,
+                autoShow: true
+            });
+
+            // Prepare Interstitial
+            AdMob.prepareInterstitial({
+                adId: admobid.interstitial,
+                autoShow: false
+            });
+
+            // Prepare Rewarded
+            AdMob.prepareRewardVideoAd({
+                adId: admobid.rewarded,
+                autoShow: false
+            });
+
+            // Native Ad (simplified; in real app, use AdMob native ad API)
+            // For web, native ads are trickier; this is a placeholder
+            document.getElementById('nativeAd').innerHTML = '<p>Native Ad Placeholder - Integrate via AdMob SDK</p>';
+        } else {
+            console.log('AdMob not available');
+        }
+    </script>
+    <script src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7534810976008564" crossorigin="anonymous"></script>
+    <!-- Fallback for web ads using AdSense (if AdMob SDK fails) -->
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
+    <script>
+        // SIP Calculation Logic (unchanged)
+        document.getElementById('sipForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const monthlyInvestment = parseFloat(document.getElementById('monthlyInvestment').value);
+            const annualRate = parseFloat(document.getElementById('annualRate').value) / 100;
+            const years = parseInt(document.getElementById('years').value);
+            
+            const monthlyRate = annualRate / 12;
+            const months = years * 12;
+            
+            let futureValue = 0;
+            let totalInvested = monthlyInvestment * months;
+            let interestEarned = 0;
+            
+            if (monthlyRate > 0) {
+                futureValue = monthlyInvestment * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate);
+                interestEarned = futureValue - totalInvested;
+            } else {
+                futureValue = totalInvested;
+            }
+            
+            // Update summary
+            document.getElementById('summary').innerHTML = `
+                <p><strong>Total Amount Invested:</strong> ₹${totalInvested.toFixed(2)}</p>
+                <p><strong>Total Interest Earned:</strong> ₹${interestEarned.toFixed(2)}</p>
+                <p><strong>Future Value:</strong> ₹${futureValue.toFixed(2)}</p>
+            `;
+            
+            // Generate year-by-year breakdown
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = '';
+            
+            let cumulativeInvested = 0;
+            let cumulativeValue = 0;
+            
+            for (let year = 1; year <= years; year++) {
+                const yearMonths = year * 12;
+                cumulativeInvested = monthlyInvestment * yearMonths;
+                
+                if (monthlyRate > 0) {
+                    cumulativeValue = monthlyInvestment * ((Math.pow(1 + monthlyRate, yearMonths) - 1) / monthlyRate);
+                } else {
+                    cumulativeValue = cumulativeInvested;
+                }
+                
+                const yearInterest = cumulativeValue - cumulativeInvested;
+                
+                const row = tableBody.insertRow();
+                row.insertCell(0).textContent = year;
+                row.insertCell(1).textContent = cumulativeInvested.toFixed(2);
+                row.insertCell(2).textContent = yearInterest.toFixed(2);
+                row.insertCell(3).textContent = cumulativeValue.toFixed(2);
+            }
+            
+            document.getElementById('results').style.display = 'block';
+            
+            // Show Interstitial Ad after calculation
+            if (typeof AdMob !== 'undefined') {
+                AdMob.showInterstitial();
+            }
+        });
+
+        // Rewarded Ad Button
+        document.getElementById('rewardedBtn').addEventListener('click', function() {
+            if (typeof AdMob !== 'undefined') {
+                AdMob.showRewardVideoAd();
+                // Simulate reward
+                setTimeout(() => {
+                    alert('Rewarded! Here\'s a bonus tip: Start investing early for better returns.');
+                }, 1000);
+            } else {
+                alert('Ad not available. Bonus tip: Start investing early for better returns.');
+            }
+        });
+    </script>
+</body>
+</html>
